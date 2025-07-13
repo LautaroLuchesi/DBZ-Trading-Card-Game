@@ -1,0 +1,71 @@
+import pygame as pg
+import modulos.variables as var
+import modulos.auxiliar as aux
+import modulos.cartas as cart
+import forms.form_manager as form_manager
+import random as rd
+
+
+def ejecutar_juego():
+    pg.init()
+    pantalla = pg.display.set_mode(var.DIMENSION_PANTALLA)
+    pg.display.set_caption(var.TITULO)
+
+    cantidades = cart.cargar_config_mazo()
+
+    items = list(cantidades.items())
+    rd.shuffle(items)
+    
+    jugador_config = {}
+    enemigo_config = {}
+
+    for i, (mazo, cantidad) in enumerate(items):
+        if i % 2 == 0:
+            jugador_config[mazo] = cantidad
+        else:
+            enemigo_config[mazo] = cantidad
+
+    mazo_jugador = cart.generar_mazo_desde_config(jugador_config)
+    mazo_enemigo = cart.generar_mazo_desde_config(enemigo_config)
+
+    stats_jugador = cart.calcular_stats_totales(mazo_jugador)
+    stats_enemigo = cart.calcular_stats_totales(mazo_enemigo)
+    
+    datos_juego = {
+        "mazo_jugador": jugador_config,
+        "mazo_enemigo": enemigo_config,
+        "cartas_jugador": [],
+        "cartas_enemigo": [],
+        "stats_jugador": stats_jugador,
+        "stats_enemigo": stats_enemigo,
+        "mensaje": ""
+        }
+    
+    manager = form_manager.create_form_manager(pantalla, datos_juego)
+
+    reloj = pg.time.Clock()
+    corriendo = True
+
+    while corriendo:
+        eventos = pg.event.get()
+        for evento in eventos:
+            if evento.type == pg.QUIT:
+                corriendo = False
+
+        pantalla.fill(var.COLOR_NEGRO)
+
+        form_manager.update(manager, eventos)
+        form_manager.draw(manager)
+
+        pg.display.flip()
+        reloj.tick(var.FPS)
+
+    pg.quit()
+
+
+
+
+
+
+# Los archivos form_menu.py, form_juego.py y form_historia.py deben definir
+# una función "crear_formulario(pantalla)" que registre su pantalla en el forms_dict.
