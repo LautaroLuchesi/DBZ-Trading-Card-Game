@@ -44,7 +44,6 @@ def cargar_ranking() -> list[tuple[str, int]]:
                         puntaje = int(puntaje_str)
                         ranking.append((nombre, puntaje))
 
-        # Ordenamiento por Selección (mayor a menor)
         n = len(ranking)
         for i in range(n - 1):
             max_idx = i

@@ -202,8 +202,6 @@ def al_hacer_click(params):
 
         if perdedor:
             estado['mensaje'] = f"The loser of the round was: {perdedor.upper()}"
-        else:
-            "none"
 
 def revelar_siguiente_cartas(estado: dict):
     """

@@ -20,7 +20,6 @@ def activar_heal(estado: dict):
     if not estado.get('heal_usado', False):
         estado['stats_jugador'] = estado['stats_iniciales_jugador'].copy()
         estado['heal_usado'] = True
-        print("[INFO] HEAL activado: stats del jugador restaurados.")
 
 def activar_shield(estado: dict):
     """
@@ -39,7 +38,6 @@ def activar_shield(estado: dict):
     if not estado.get('shield_usado', False):
         estado['shield_activo'] = True
         estado['shield_usado'] = True
-        print("[INFO] SHIELD activado: la próxima derrota será invertida.")
 
 def verificar_escudo(estado: dict, perdedor: str):
     """
@@ -54,7 +52,6 @@ def verificar_escudo(estado: dict, perdedor: str):
         str: El nuevo perdedor, considerando si el escudo estaba activo o no.
     """
     if perdedor == 'player' and estado.get('shield_activo', False):
-        print("[INFO] SHIELD activado: el daño fue redirigido al enemigo.")
         estado['shield_activo'] = False
         return 'enemy'
     return perdedor
@@ -80,7 +77,6 @@ def usar_comodin(form_comodin: dict) -> None:
     """
     form_jugar = base.forms_dict.get('form_jugar')
     if not form_jugar:
-        print("[ERROR] form_jugar no encontrado en forms_dict")
         return
 
     estado_jugar = form_jugar['estado']

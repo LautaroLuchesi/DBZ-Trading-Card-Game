@@ -7,6 +7,19 @@ import random as rd
 
 
 def ejecutar_juego():
+    """
+    Inicializa y ejecuta el bucle principal del juego de cartas.
+
+    Esta función configura la ventana de Pygame, carga la configuración de los mazos desde un JSON,
+    divide las cartas entre el jugador y el enemigo, genera los mazos y calcula los stats iniciales.
+    Luego, crea los formularios necesarios y entra en el bucle principal del juego, donde se manejan
+    los eventos, se actualiza la lógica y se renderiza la interfaz.
+
+    El juego continúa ejecutándose hasta que el usuario cierre la ventana.
+
+    Returns:
+        None
+    """
     pg.init()
     pantalla = pg.display.set_mode(var.DIMENSION_PANTALLA)
     pg.display.set_caption(var.TITULO)
@@ -61,11 +74,3 @@ def ejecutar_juego():
         reloj.tick(var.FPS)
 
     pg.quit()
-
-
-
-
-
-
-# Los archivos form_menu.py, form_juego.py y form_historia.py deben definir
-# una función "crear_formulario(pantalla)" que registre su pantalla en el forms_dict.
