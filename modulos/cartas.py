@@ -91,12 +91,8 @@ def cargar_imagen_carta(ruta: str, ancho: int, alto: int):
     Returns:
         pygame.Surface: Imagen escalada de la carta.
     """
-    ancho = var.TAMANIO_CARTA[0]
-    alto = var.TAMANIO_CARTA[1]
     if os.path.exists(ruta):
         imagen = pg.image.load(ruta)
-    else:
-        imagen = pg.image.load('./assets/img/cartas/carta_default.png')
     return pg.transform.scale(imagen, (ancho, alto))
 
 def obtener_stats_desde_nombre(nombre_archivo: str):
@@ -125,7 +121,6 @@ def obtener_stats_desde_nombre(nombre_archivo: str):
         atk = int(atk_str)
         defensa = int(def_str)
         bonus = int(bonus_str)
-        print(f"[OK] Stats: HP={hp}, ATK={atk}, DEF={defensa}, BONUS={bonus}")
         return {'hp': hp, 'atk': atk, 'def': defensa, 'bonus': bonus}
     else:
         return {'hp': 0, 'atk': 0, 'def': 0, 'bonus': 0}
