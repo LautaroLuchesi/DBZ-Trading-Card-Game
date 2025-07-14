@@ -3,8 +3,23 @@ import modulos.variables as var
 import os
 
 forms_dict = {}
+pg.mixer.init()
 
 def create_base_form(dict_form_data: dict) -> dict:
+    """
+    Crea un formulario base a partir de los datos proporcionados.
+
+    Este formulario incluye propiedades como nombre, pantalla, coordenadas, fondo,
+    número de nivel, música y una lista vacía de widgets. También lo registra en el
+    diccionario global `forms_dict`.
+
+    Args:
+        dict_form_data (dict): Diccionario con los datos necesarios para inicializar
+                               el formulario (pantalla, fondo, música, coordenadas, etc.).
+
+    Returns:
+        dict: Diccionario que representa el formulario base inicializado.
+    """
     form = {}
     form['name'] = dict_form_data.get('name')
     form['screen'] = dict_form_data.get('screen')
@@ -24,63 +39,124 @@ def create_base_form(dict_form_data: dict) -> dict:
 
     return form
 
-pg.mixer.init()
-
 click_sound = pg.mixer.Sound(var.RUTA_SONIDO_CLICK)
 
-def play_click_sound():
+def play_click_sound() -> None:
+    """
+    Reproduce un sonido de clic, normalmente utilizado al presionar un botón.
+
+    Returns:
+        None
+    """
     click_sound.play()
 
-def play_music(form_dict: dict):
+def play_music(form_dict: dict) -> None:
+    """
+    Reproduce la música asociada al formulario indicado.
+
+    Args:
+        form_dict (dict): Diccionario que representa el formulario, debe contener el path de la música.
+
+    Returns:
+        None
+    """
     pg.mixer.music.load(form_dict.get('music_path'))
     pg.mixer.music.set_volume(0.4)
-    pg.mixer.music.play(loops = -1, fade_ms = 400)
+    pg.mixer.music.play(loops=-1, fade_ms=400)
 
-def stop_music():
+def stop_music() -> None:
+    """
+    Detiene la música que esté sonando actualmente.
+
+    Returns:
+        None
+    """
     pg.mixer.music.stop()
 
-def set_active(name: str):
+def set_active(name: str) -> None:
+    """
+    Establece como activo el formulario con el nombre indicado.
+
+    Desactiva todos los formularios, detiene la música actual,
+    reproduce la música del nuevo formulario (si tiene) y,
+    en caso de formularios de comodines, reproduce un sonido adicional.
+
+    Args:
+        name (str): Nombre del formulario que se quiere activar.
+
+    Returns:
+        None
+    """
     for form in forms_dict.values():
         form['active'] = False
 
     if name in forms_dict:
         form = forms_dict[name]
         form['active'] = True
-        print(f"[INFO] Formulario activo: {name}")
 
         stop_music()
 
         music_path = form.get('music_path')
         if music_path and os.path.exists(music_path):
             play_music(form)
-            print(f"[INFO] Reproduciendo música: {music_path}")
-        else:
-            print(f"[WARN] No se encontró música para: {name} o ruta inválida")
 
         if name in ["form_comodin_heal", "form_comodin_shield"]:
             sonido_intro = pg.mixer.Sound(var.RUTA_SONIDO_COMODIN_INTRO)
             sonido_intro.play()
 
-    else:
-        print(f"[ERROR] Formulario '{name}' no encontrado en forms_dict.")
+def update_widgets(form_data: dict) -> None:
+    """
+    Actualiza todos los widgets del formulario actual.
 
-def update_widgets(form_data: dict):
+    Args:
+        form_data (dict): Diccionario que representa el formulario actual.
+
+    Returns:
+        None
+    """
     widgets = form_data.get('widgets_list', [])
     for i in range(len(widgets)):
         widgets[i].update()
 
-def draw_widgets(form_data: dict):
+def draw_widgets(form_data: dict) -> None:
+    """
+    Dibuja todos los widgets del formulario actual en la pantalla.
+
+    Args:
+        form_data (dict): Diccionario que representa el formulario actual.
+
+    Returns:
+        None
+    """
     widgets = form_data.get('widgets_list', [])
     for i in range(len(widgets)):
         widgets[i].draw()
 
-def draw(form_data: dict):
-    print(f"Dibujando fondo de: {form_data['name']}")
+def draw(form_data: dict) -> None:
+    """
+    Dibuja el fondo y los widgets del formulario actual en pantalla.
+
+    Args:
+        form_data (dict): Diccionario que representa el formulario actual.
+
+    Returns:
+        None
+    """
     form_data['screen'].blit(form_data['background'], form_data['rect'])
     draw_widgets(form_data)
 
-def update(form_data: dict):
+def update(form_data: dict) -> None:
+    """
+    Actualiza todos los widgets del formulario actual.
+
+    Args:
+        form_data (dict): Diccionario que representa el formulario actual.
+
+    Returns:
+        None
+    """
     update_widgets(form_data)
+
 
 
 

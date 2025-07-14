@@ -27,6 +27,7 @@ RUTA_FONDO_DERROTA = './assets/img/fondos/fondo_nombre_per.png'
 
 RUTA_MAZOS = './assets/img/mazos/'
 RUTA_RANKING_CSV = './archivos/ranking.csv'
+RUTA_CONFIG_JSON = 'archivos/config.json'
 
 #MUSICA y SONIDOS
 RUTA_MUSICA_JUGAR = './assets/sound/music/level_01.ogg'

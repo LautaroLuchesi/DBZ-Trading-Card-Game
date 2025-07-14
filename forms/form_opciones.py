@@ -2,7 +2,19 @@ import forms.form_base as base
 import modulos.variables as var
 from utn_fra.pygame_widgets import Label, Button
 
-def init_form_opciones(dict_form_data, jugador=None):
+def init_form_opciones(dict_form_data: dict) -> dict:
+    """
+    Inicializa el formulario de opciones con sus etiquetas y botones.
+
+    Este formulario permite al usuario activar o desactivar la música, o volver al menú principal.
+
+    Args:
+        dict_form_data (dict): Diccionario con los datos necesarios para crear el formulario,
+                               como pantalla, dimensiones, fondo, nombre, etc.
+
+    Returns:
+        dict: Diccionario que representa el formulario ya configurado.
+    """   
     form = base.create_base_form(dict_form_data)
     screen = dict_form_data['screen']
     
@@ -63,10 +75,28 @@ def init_form_opciones(dict_form_data, jugador=None):
         ]
     return form
 
-def update(form_data: dict):
+def update(form_data: dict) -> None:
+    """
+    Actualiza todos los widgets del formulario de opciones.
+
+    Args:
+        form_data (dict): Diccionario del formulario actual.
+
+    Returns:
+        None
+    """
     base.update(form_data)
 
-def draw(form_data: dict):
+def draw(form_data: dict) -> None:
+    """
+    Dibuja el fondo y todos los elementos del formulario de opciones en pantalla.
+
+    Args:
+        form_data (dict): Diccionario del formulario actual.
+
+    Returns:
+        None
+    """
     base.draw(form_data)
 
 

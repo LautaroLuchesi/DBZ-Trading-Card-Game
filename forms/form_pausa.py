@@ -3,7 +3,19 @@ import forms.form_base as base
 import modulos.variables as var
 from utn_fra.pygame_widgets import Label, Button
 
-def init_form_pausa(dict_form_data, form_jugar):
+def init_form_pausa(dict_form_data: dict, form_jugar: dict) -> dict:
+    """
+    Inicializa el formulario de pausa, mostrando opciones para continuar o volver al menú.
+
+    Args:
+        dict_form_data (dict): Diccionario con datos de configuración del formulario.
+            - 'screen': superficie donde se dibuja.
+        form_jugar (dict): Formulario del juego, al cual se vuelve al reanudar.
+
+    Returns:
+        dict: Formulario de pausa con sus widgets configurados.
+    """
+    
     form = base.create_base_form(dict_form_data)
     screen = dict_form_data['screen']
 
@@ -54,8 +66,27 @@ def init_form_pausa(dict_form_data, form_jugar):
 
     return form
 
-def update(form_data: dict):
+def update(form_data: dict) -> None:
+    """
+    Actualiza los elementos del formulario de pausa (botones, etiquetas).
+
+    Args:
+        form_data (dict): Diccionario del formulario de pausa.
+
+    Returns:
+        None
+    """
     base.update(form_data)
 
-def draw(form_data: dict):
+def draw(form_data: dict) -> None:
+    """
+    Dibuja el fondo y los elementos del formulario de pausa en pantalla.
+
+    Args:
+        form_data (dict): Diccionario del formulario de pausa.
+
+    Returns:
+        None
+    """
     base.draw(form_data)
+

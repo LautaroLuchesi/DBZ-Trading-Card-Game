@@ -3,11 +3,24 @@ import forms.form_base as base
 import modulos.comodines as comodin
 from utn_fra.pygame_widgets import Button
 
-def init_form_comodin_shield(dict_form_data):
+def init_form_comodin_shield(dict_form_data: dict) -> dict:
+    """
+    Inicializa el formulario para activar el comodín de escudo (SHIELD).
+
+    Este formulario permite al jugador usar el comodín de escudo durante la partida
+    o volver al formulario principal del juego sin utilizarlo.
+
+    Args:
+        dict_form_data (dict): Diccionario con los datos necesarios para crear el formulario,
+                               como la pantalla, dimensiones, fondo, nombre, etc.
+
+    Returns:
+        dict: Diccionario que representa el formulario configurado con sus botones.
+    """
     form = base.create_base_form(dict_form_data)
     screen = dict_form_data['screen']
 
-    form['btn_usar_shield'] = Button(
+    form['btn_shield'] = Button(
         x = 350,
         y = 600,
         text = 'SHIELD',
@@ -27,5 +40,5 @@ def init_form_comodin_shield(dict_form_data):
         color = var.COLOR_NARANJA,
         on_click = lambda _: base.set_active('form_jugar')
     )
-    form['widgets_list'] = [form['btn_usar_shield'], form['btn_volver']]
+    form['widgets_list'] = [form['btn_shield'], form['btn_volver']]
     return form

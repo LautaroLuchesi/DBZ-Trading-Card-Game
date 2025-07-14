@@ -4,7 +4,19 @@ import modulos.auxiliar as aux
 from utn_fra.pygame_widgets import Label, Button
 import pygame as pg
 
-def init_form_victoria(dict_form_data, score_obtenido):
+def init_form_victoria(dict_form_data: dict, score_obtenido: int) -> dict:
+
+    """
+    Inicializa el formulario de victoria al ganar una partida.
+
+    Args:
+        dict_form_data (dict): Datos necesarios para inicializar el formulario.
+        score_obtenido (int): Puntaje alcanzado por el jugador.
+
+    Return:
+        dict: Formulario con todos los elementos visuales y lógicos configurados.
+    """
+
     form = base.create_base_form(dict_form_data)
 
     form['estado'] = {
@@ -12,6 +24,7 @@ def init_form_victoria(dict_form_data, score_obtenido):
         'score': score_obtenido,
         'confirmado': False
         }
+    
     form['lbl_titulo'] = Label(
         x = var.DIMENSION_PANTALLA[0] // 2,
         y = 35,
@@ -58,11 +71,20 @@ def init_form_victoria(dict_form_data, score_obtenido):
         color = var.COLOR_BLANCO
         )
 
-    def confirmar_nombre(_=None):
+    def confirmar_nombre(_=None) -> None:
+        """
+        Guarda el nombre ingresado y redirige al formulario de ranking.
+
+        Args:
+            _ (opcional): Argumento dummy si se llama desde un botón.
+
+        Return:
+            None
+        """        
         nombre = form['estado']['input_nombre'].strip()
         if nombre:
             aux.guardar_puntaje(nombre, form['estado']['score'])
-            base.set_active("form_menu")
+            base.set_active("form_ranking")
 
     form['btn_confirmar'] = Button(
         x = var.DIMENSION_PANTALLA[0] // 2,
@@ -86,28 +108,29 @@ def init_form_victoria(dict_form_data, score_obtenido):
 
     return form
 
-def update(form, eventos):
-    print("[DEBUG] update de form_victoria se está ejecutando")  # <-- esto es clave
+def update(form: dict, eventos: list[pg.event.Event]) -> None:
+    """
+    Actualiza los elementos visuales del formulario y gestiona la lógica de ingreso de nombre.
+
+    Args:
+        form (dict): Formulario de victoria.
+        eventos (list): Lista de eventos de Pygame.
+
+    Return:
+        None
+    """
     base.update(form)
-    estado = form['estado']
+    aux.logica_enter_name(form, eventos)
+def draw(form: dict) -> None:
+    """
+    Dibuja todos los elementos del formulario de victoria y una línea decorativa debajo del input.
 
-    for evento in eventos: 
-        if evento.type == pg.KEYDOWN:
-            print(f"[DEBUG] KEYDOWN detectado: {evento.key}")  # <-- esto también
-            if evento.key == pg.K_BACKSPACE:
-                estado['input_nombre'] = estado['input_nombre'][:-1]
-                print(f"Backspace presionado, texto ahora: '{estado['input_nombre']}'")
-            elif evento.key == pg.K_RETURN:
-                form['btn_confirmar'].on_click(None)
-            else:
-                if len(estado['input_nombre']) < 12 and evento.unicode.isprintable():
-                    estado['input_nombre'] += evento.unicode
-                    print(f"Tecla presionada: '{evento.unicode}', texto ahora: '{estado['input_nombre']}'")
+    Args:
+        form (dict): Formulario actual.
 
-    form['lbl_input'].update_text(estado['input_nombre'], var.COLOR_ROJO)
-    form['lbl_score'].update_text(f"Score: {estado['score']}", var.COLOR_BLANCO)
-
-def draw(form):
+    Return:
+        None
+    """
     base.draw(form)
     pg.draw.line(form['screen'], var.COLOR_BLANCO, (400, 440), (880, 440), 2)
 

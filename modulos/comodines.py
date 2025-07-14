@@ -16,10 +16,10 @@ def activar_shield(estado):
         print("[INFO] SHIELD activado: la próxima derrota será invertida.")
 
 def verificar_escudo(estado, perdedor):
-    if perdedor == 'jugador' and estado.get('shield_activo', False):
+    if perdedor == 'player' and estado.get('shield_activo', False):
         print("[INFO] SHIELD activado: el daño fue redirigido al enemigo.")
         estado['shield_activo'] = False
-        return 'enemigo'
+        return 'enemy'
     return perdedor
 
 def usar_comodin(form_comodin):
@@ -39,12 +39,12 @@ def usar_comodin(form_comodin):
             form_jugar['widgets_list'].remove(form_jugar['btn_heal'])
 
         if 'lbl_heal_active' not in form_jugar:
-            pantalla = estado_jugar['pantalla']
+            screen = estado_jugar['screen']
             form_jugar['lbl_heal_active'] = Label(
                 x = 1200,
                 y = 197,
                 text = "HEAL",
-                screen = pantalla,
+                screen = screen,
                 font_path = var.FUENTE_DBZ,
                 font_size = 40,
                 color = var.COLOR_AMARILLO,
@@ -57,12 +57,12 @@ def usar_comodin(form_comodin):
             form_jugar['widgets_list'].remove(form_jugar['btn_shield'])
 
         if 'lbl_shield_active' not in form_jugar:
-            pantalla = estado_jugar['pantalla']
+            screen = estado_jugar['screen']
             form_jugar['lbl_shield_active'] = Label(
                 x = 1200,
                 y = 272,
                 text = "SHIELD",
-                screen = pantalla,
+                screen = screen,
                 font_path = var.FUENTE_DBZ,
                 font_size = 40,
                 color = var.COLOR_AMARILLO,
@@ -73,7 +73,7 @@ def usar_comodin(form_comodin):
 
 def actualizar_estado_comodines(form):
     estado = form['estado']
-    pantalla = estado['screen']
+    screen = estado['screen']
 
     if estado.get('heal_usado', False):
         if 'btn_heal' in form and form['btn_heal'] in form['widgets_list']:
@@ -83,7 +83,7 @@ def actualizar_estado_comodines(form):
                 x = 1200,
                 y = 177,
                 text = "HEAL",
-                screen = pantalla,
+                screen = screen,
                 font_path = var.FUENTE_DBZ,
                 font_size = 40,
                 color = var.COLOR_AMARILLO,
@@ -98,7 +98,7 @@ def actualizar_estado_comodines(form):
                 x = 1200,
                 y = 227,
                 text = "SHIELD",
-                screen = pantalla,
+                screen = screen,
                 font_path = var.FUENTE_DBZ,
                 font_size = 40,
                 color = var.COLOR_AMARILLO,

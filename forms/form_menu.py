@@ -4,7 +4,21 @@ import forms.form_base as base
 import modulos.auxiliar as aux
 from utn_fra.pygame_widgets import Button, Label
 
-def init_form_menu(dict_form_data: dict, form_manager):
+def init_form_menu(dict_form_data: dict, form_manager) -> dict:
+    """
+    Inicializa el formulario del menú principal con sus etiquetas y botones.
+
+    Este formulario permite al usuario iniciar el juego, ver el ranking, acceder
+    a las opciones o salir del juego.
+
+    Args:
+        dict_form_data (dict): Diccionario con los datos necesarios para crear el formulario,
+                               como pantalla, dimensiones, fondo, nombre, etc.
+        form_manager: Objeto que gestiona los formularios, necesario para reiniciar el formulario de juego.
+
+    Returns:
+        dict: Diccionario que representa el formulario ya configurado con todos sus widgets.
+    """
     form = base.create_base_form(dict_form_data)
 
     form['lbl_titulo'] = Label(
@@ -69,11 +83,29 @@ def init_form_menu(dict_form_data: dict, form_manager):
     
     return form
 
-def update(form_data: dict):
-    base.update(form_data)
+def update(form: dict) -> None:
+    """
+    Actualiza todos los widgets del formulario activo.
 
-def draw(form_data: dict):
-    base.draw(form_data) 
+    Args:
+        form_data (dict): Diccionario que contiene los datos y widgets del formulario actual.
+
+    Returns:
+        None
+    """
+    base.update(form)
+
+def draw(form: dict) -> None:
+    """
+    Dibuja el fondo y todos los widgets del formulario activo en pantalla.
+
+    Args:
+        form (dict): Diccionario que contiene los datos y widgets del formulario actual.
+
+    Returns:
+        None
+    """
+    base.draw(form)
 
         
 

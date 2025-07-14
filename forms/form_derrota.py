@@ -4,7 +4,21 @@ import modulos.auxiliar as aux
 from utn_fra.pygame_widgets import Label, Button
 import pygame as pg
 
-def init_form_derrota(dict_form_data, score_obtenido):
+def init_form_derrota(dict_form_data: dict, score_obtenido: int) -> dict:
+    """
+    Inicializa el formulario de derrota con etiquetas, campos para ingresar nombre y botón de confirmación.
+
+    Este formulario se muestra al perder la partida, permite ver el puntaje obtenido e ingresar
+    un nombre para guardar el score en el ranking.
+
+    Args:
+        dict_form_data (dict): Diccionario con los datos necesarios para crear el formulario, 
+                               como pantalla, dimensiones, etc.
+        score_obtenido (int): Puntaje obtenido por el jugador durante la partida.
+
+    Returns:
+        dict: Diccionario que representa el formulario ya configurado.
+    """
     form = base.create_base_form(dict_form_data)
     screen = dict_form_data['screen'] 
 
@@ -58,11 +72,20 @@ def init_form_derrota(dict_form_data, score_obtenido):
         color = var.COLOR_BLANCO
         )
 
-    def confirmar_nombre(_=None):
+    def confirmar_nombre(_=None) -> None:
+        """
+        Guarda el nombre ingresado y redirige al formulario de ranking.
+
+        Args:
+            _ (opcional): Argumento dummy si se llama desde un botón.
+
+        Return:
+            None
+        """
         nombre = form['estado']['input_nombre'].strip()
         if nombre:
             aux.guardar_puntaje(nombre, form['estado']['score'])
-            base.set_active("form_menu")
+            base.set_active("form_ranking")
 
     form['btn_confirmar'] = Button(
         x = var.DIMENSION_PANTALLA[0] // 2,
@@ -86,27 +109,29 @@ def init_form_derrota(dict_form_data, score_obtenido):
 
     return form
 
-def update(form, eventos):
+def update(form: dict, eventos: list) -> None:
+    """
+    Actualiza el formulario de derrota, incluyendo la lógica de ingreso del nombre y eventos del teclado.
+
+    Args:
+        form (dict): Diccionario que representa el formulario de derrota.
+        eventos (list): Lista de eventos de Pygame (como teclas presionadas).
+
+    Returns:
+        None
+    """
     base.update(form)
-    estado = form['estado']
+    aux.logica_enter_name(form, eventos)
 
-    for evento in eventos:
-        if evento.type == pg.KEYDOWN:
-            print(f"[DEBUG] KEYDOWN detectado: {evento.key}")
-            if evento.key == pg.K_BACKSPACE:
-                estado['input_nombre'] = estado['input_nombre'][:-1]
-                print(f"Backspace presionado, texto ahora: '{estado['input_nombre']}'")
-            elif evento.key == pg.K_RETURN:
-                form['btn_confirmar'].on_click(None)
-            else:
-                if len(estado['input_nombre']) < 12 and evento.unicode.isprintable():
-                    estado['input_nombre'] += evento.unicode
-                    print(f"Tecla presionada: '{evento.unicode}', texto ahora: '{estado['input_nombre']}'")
+def draw(form: dict) -> None:
+    """
+    Dibuja en pantalla todos los elementos del formulario de derrota y una línea blanca decorativa.
 
-    form['lbl_input'].update_text(estado['input_nombre'], var.COLOR_ROJO)
-    form['lbl_score'].update_text(f"Score: {estado['score']}", var.COLOR_BLANCO)
+    Args:
+        form (dict): Diccionario que representa el formulario de derrota.
 
- 
-def draw(form):
+    Returns:
+        None
+    """
     base.draw(form)
     pg.draw.line(form['screen'], var.COLOR_BLANCO, (400, 440), (880, 440), 2)

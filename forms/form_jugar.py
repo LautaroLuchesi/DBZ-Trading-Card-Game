@@ -7,7 +7,21 @@ import forms.form_base as base
 import modulos.comodines as comodines
 from utn_fra.pygame_widgets import Label, TextPoster, Button
 
-def init_form_jugar(dict_form_data: dict):
+def init_form_jugar(dict_form_data: dict) -> dict:
+    """
+    Inicializa el formulario de juego configurando el estado inicial, etiquetas, botones y demás elementos gráficos.
+
+    Esta función prepara el entorno de juego con los mazos del jugador y enemigo,
+    calcula estadísticas, carga imágenes y sonidos, y define las acciones de los botones
+    para manejar la mecánica principal del juego.
+
+    Args:
+        dict_form_data (dict): Diccionario con los datos necesarios para crear el formulario,
+                               incluyendo la pantalla, configuración de mazos y otros parámetros.
+
+    Returns:
+        dict: Diccionario que representa el formulario de juego configurado con sus widgets y estado.
+    """
     screen = dict_form_data['screen']
     form = base.create_base_form(dict_form_data)
 
@@ -102,38 +116,6 @@ def init_form_jugar(dict_form_data: dict):
         background_dimentions = (150, 40),
         background_coords = (20, 50),
         )
-    
-    sonido_next = pg.mixer.Sound(var.RUTA_SONIDO_NEXT)
-
-    def al_hacer_click(params):
-        sonido_next.play()
-        estado = params['estado']
-        if estado['mazo_jugador'] and estado['mazo_enemigo']:
-            cart.revelar_siguiente_cartas(estado)
-            carta_j = estado['cartas_jugador'][-1]
-            carta_e = estado['cartas_enemigo'][-1]
-
-            stats_j, stats_e, perdedor = cart.resolver_mano(
-                carta_j, carta_e, estado['stats_jugador'], 
-                estado['stats_enemigo'], estado
-                )
-
-            estado['stats_jugador'] = stats_j
-            estado['stats_enemigo'] = stats_e
-            
-            if perdedor == 'enemy':
-                daño_hp = int(carta_e['hp'] * (1 + carta_e['bonus'] / 100))
-                daño_atk = int(carta_e['atk'] * (1 + carta_e['bonus'] / 100))
-                daño_def = int(carta_e['def'] * (1 + carta_e['bonus'] / 100))
-                score = (daño_hp + daño_atk + daño_def) // 10
-                estado['score'] += score
-                print(f"[INFO] Ganaste {score} puntos. Total: {estado['score']}")
-
-            if perdedor:
-                estado['mensaje'] = f"The loser of the round was: {perdedor.upper()}"
-            else:
-                "none"
-
     form['btn_siguiente'] = Button(
         x = 1200,
         y = 386,
@@ -142,7 +124,7 @@ def init_form_jugar(dict_form_data: dict):
         font_path = var.FUENTE_DBZ,
         font_size = 40,
         color = var.COLOR_NARANJA,
-        on_click = al_hacer_click, on_click_param = {'estado': form['estado']}
+        on_click = cart.al_hacer_click, on_click_param = {'estado': form['estado']}
         )
     form['btn_pausa'] = Button(
         x = 950,
@@ -180,34 +162,31 @@ def init_form_jugar(dict_form_data: dict):
         ]
     return form
 
-def update(form_data: dict, form_manager: dict):
+def update(form_data: dict, form_manager: dict) -> None:
+    """
+    Actualiza el estado del formulario de juego, ejecutando la lógica principal y actualizando comodines y widgets.
+
+    Args:
+        form_data (dict): Diccionario que contiene los datos y estado actual del formulario de juego.
+        form_manager (dict): Gestor de formularios que controla la navegación y estados entre formularios.
+
+    Returns:
+        None
+    """
+    form_data['estado']['pausado'] = False
     cart.logica_form_jugar(form_data, form_manager)
-    comodines.actualizar_estado_comodines(form_data) # hacemos lo específico
-    base.update(form_data) # delegamos la parte común    # hacemos lo específico
+    comodines.actualizar_estado_comodines(form_data)
+    base.update(form_data)
 
-def draw(form):
-    screnn = form['estado']['screen']
-    screnn.blit(form['estado']['fondo'], (0, 0))
 
-    # Reversos
-    if form['estado']['mazo_jugador']:
-        reverso_j = cart.obtener_reverso_según_expansion(form['estado']['mazo_jugador'][0]['expansion'], form['estado']['reversos'])
-        screnn.blit(reverso_j, (400, 430))
+def draw(form: dict) -> None:
+    """
+    Dibuja en pantalla las cartas y elementos gráficos del formulario de juego.
 
-    if form['estado']['mazo_enemigo']:
-        reverso_e = cart.obtener_reverso_según_expansion(form['estado']['mazo_enemigo'][0]['expansion'], form['estado']['reversos'])
-        screnn.blit(reverso_e, (400, 99))
+    Args:
+        form (dict): Diccionario que contiene los datos y widgets del formulario actual.
 
-    # Cartas actuales
-    if form['estado']['cartas_jugador']:
-        carta = form['estado']['cartas_jugador'][-1]
-        img = cart.cargar_imagen_carta(carta['ruta'], * form['estado']['tamanio_carta'])
-        screnn.blit(img, (633, 430))
-
-    if form['estado']['cartas_enemigo']:
-        carta = form['estado']['cartas_enemigo'][-1]
-        img = cart.cargar_imagen_carta(carta['ruta'], * form['estado']['tamanio_carta'])
-        screnn.blit(img, (633, 99))
-
-    for widget in form['widgets_list']:
-        widget.draw()
+    Returns:
+        None
+    """
+    cart.dibujar_cartas(form)
