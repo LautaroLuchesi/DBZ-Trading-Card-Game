@@ -190,7 +190,7 @@ def reiniciar_form_jugar(form_manager: dict, pantalla: pg.Surface) -> None:
     Return:
         None
     '''
-    configs = cart.cargar_cartas("archivos/config.json")
+    configs = cart.cargar_json("archivos/config.json")
     mazo_j = configs
     mazo_e = configs
 

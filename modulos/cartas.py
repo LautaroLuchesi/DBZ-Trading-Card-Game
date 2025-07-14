@@ -6,20 +6,20 @@ import modulos.variables as var
 import modulos.auxiliar as aux
 import modulos.comodines as comodines
 
-def cargar_config_mazo():
+def cargar_json(ruta: str) -> dict:
     """
-    Carga la configuración de mazo desde un archivo JSON.
+    Carga el contenido de un archivo JSON.
+
+    Args:
+        ruta (str): Ruta al archivo JSON.
 
     Returns:
-        dict: Diccionario con la configuración del mazo, o vacío si no existe el archivo.
+        dict: Contenido del archivo cargado.
     """
-    ruta_config = './archivos/config.json'
-    if os.path.exists(ruta_config):
-        with open(ruta_config, 'r', encoding='utf-8') as f:
-            config = json.load(f)
-        return config
-    else:
-        return {}
+    if os.path.exists(ruta):
+        with open(ruta, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {}
 
 def generar_mazo_desde_config(config: dict, cartas_usadas=None):
     """
@@ -42,7 +42,6 @@ def generar_mazo_desde_config(config: dict, cartas_usadas=None):
         ruta_carpeta = f'./assets/img/mazos/{carpeta}'
 
         if not os.path.exists(ruta_carpeta):
-            print(f"[!] Carpeta no encontrada: {ruta_carpeta}")
             continue
 
         todas = []
@@ -79,34 +78,7 @@ def generar_mazo_desde_config(config: dict, cartas_usadas=None):
 
     rd.shuffle(mazo)
     return mazo
-
-
-def cargar_cartas(ruta: str):
-    """
-    Carga un listado de cartas desde un archivo JSON.
-
-    Args:
-        ruta (str): Ruta al archivo JSON.
-
-    Returns:
-        dict/list: Contenido del archivo.
-    """
-    with open(ruta, "r", encoding="utf-8") as archivo:
-        return json.load(archivo)
-    
-def cargar_configuracion(ruta_config: str):
-    """
-    Carga una configuración desde un archivo JSON.
-
-    Args:
-        ruta_config (str): Ruta del archivo JSON.
-
-    Returns:
-        dict: Configuración cargada.
-    """
-    with open(ruta_config, "r", encoding="utf-8") as f:
-        return json.load(f)
-    
+     
 def cargar_imagen_carta(ruta: str, ancho: int, alto: int):
     """
     Carga y escala una imagen de carta desde una ruta dada. Usa una imagen por defecto si la ruta no existe.
@@ -156,7 +128,6 @@ def obtener_stats_desde_nombre(nombre_archivo: str):
         print(f"[OK] Stats: HP={hp}, ATK={atk}, DEF={defensa}, BONUS={bonus}")
         return {'hp': hp, 'atk': atk, 'def': defensa, 'bonus': bonus}
     else:
-        print(f"[ERROR] Alguno de los valores no es numérico: hp='{hp_str}', atk='{atk_str}', def='{def_str}', bonus='{bonus_str}'")
         return {'hp': 0, 'atk': 0, 'def': 0, 'bonus': 0}
 
 def cargar_reversos():
@@ -340,7 +311,7 @@ def resolver_mano(carta_j: dict, carta_e: dict, stats_jugador: dict, stats_enemi
         stats_enemigo['def'] = max(stats_enemigo['def'] - def_desc, 0)
 
     if critico:
-        print(f"[CRÍTICO] ¡Golpe crítico aplicado! Daño x5 al {perdedor.upper()}")
+        print(f"[CRÍTICO] ¡Golpe crítico aplicado! Daño x10 al {perdedor.upper()}")
     return stats_jugador, stats_enemigo, perdedor
 
 def logica_form_jugar(form: dict, form_manager: dict):

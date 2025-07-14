@@ -11,7 +11,7 @@ def ejecutar_juego():
     pantalla = pg.display.set_mode(var.DIMENSION_PANTALLA)
     pg.display.set_caption(var.TITULO)
 
-    cantidades = cart.cargar_config_mazo()
+    cantidades = cart.cargar_json("./archivos/config.json") 
 
     items = list(cantidades.items())
     rd.shuffle(items)
