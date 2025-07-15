@@ -6,6 +6,7 @@ import modulos.variables as var
 import modulos.auxiliar as aux
 import modulos.comodines as comodines
 
+
 def cargar_json(ruta: str) -> dict:
     """
     Carga el contenido de un archivo JSON.
@@ -343,7 +344,7 @@ def logica_form_jugar(form: dict, form_manager: dict):
     comodines.actualizar_estado_comodines(form)
     aux.verificar_fin_de_juego(form, form_manager)
 
-def dibujar_cartas(form: dict):
+def dibujar_cartas(form: dict): 
     """
     Dibuja el fondo, reversos, cartas actuales y widgets en pantalla durante la partida.
 

@@ -174,7 +174,7 @@ def guardar_puntaje(nombre: str, puntaje: int, ruta: str = "archivos/ranking.csv
     if nombre.strip() == "":
         return
 
-    with open(ruta, "a", newline="") as archivo:
+    with open(ruta, "a", newline="", encoding="utf-8") as archivo:
         writer = csv.writer(archivo)
         writer.writerow([nombre.strip(), puntaje])
 
@@ -255,10 +255,10 @@ def dibujar_ranking(form: dict) -> None:
     screen.blit(form['surface'], (0, 0))
 
     ranking = cargar_ranking()
-    y = 200
+    y = 185
     for i, (nombre, puntaje) in enumerate(ranking[:10]):
-        texto = f"{i + 1}. {nombre} - {puntaje} pts"
-        mostrar_texto(screen, texto, 45, var.COLOR_AMARILLO, 450, y)
+        texto = f"{i + 1}. {nombre} - score: {puntaje}"
+        mostrar_texto(screen, texto, 49, var.COLOR_AMARILLO, 445, y)
         y += 35
 
     for widget in form['widgets_list']:

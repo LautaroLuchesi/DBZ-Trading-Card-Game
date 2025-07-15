@@ -93,7 +93,7 @@ def usar_comodin(form_comodin: dict) -> None:
             screen = estado_jugar['screen']
             form_jugar['lbl_heal_active'] = Label(
                 x = 1200,
-                y = 197,
+                y = 207,
                 text = "HEAL",
                 screen = screen,
                 font_path = var.FUENTE_DBZ,
@@ -111,7 +111,7 @@ def usar_comodin(form_comodin: dict) -> None:
             screen = estado_jugar['screen']
             form_jugar['lbl_shield_active'] = Label(
                 x = 1200,
-                y = 272,
+                y = 262,
                 text = "SHIELD",
                 screen = screen,
                 font_path = var.FUENTE_DBZ,
