@@ -40,7 +40,7 @@ def init_form_pausa(dict_form_data: dict, form_jugar: dict) -> dict:
     form['btn_volver'] = Button(
         x = var.DIMENSION_PANTALLA[0] // 2,
         y = 350,
-        text = "VOLVER AL JUEGO",
+        text = "BACK TO GAME",
         screen = screen,
         font_path = var.FUENTE_DBZ,
         font_size = 40,
