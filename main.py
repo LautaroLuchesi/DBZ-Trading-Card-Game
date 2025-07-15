@@ -17,7 +17,7 @@ def install_requirements() -> None :
     if os.name in ['nt', 'dos']:
         comando = 'python '
     else:
-        comando = 'python3 '
+        comando = 'python3'
     comando += '-m pip install -r archivos/requirements.txt'
     os.system(comando)
 
